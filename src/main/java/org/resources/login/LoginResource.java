@@ -1,4 +1,4 @@
-package org.login;
+package org.resources.login;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -10,8 +10,8 @@ public class LoginResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "Hello from Quarkus REST";
+    public String login() {
+        return "Loged in";
     }
 
 }
