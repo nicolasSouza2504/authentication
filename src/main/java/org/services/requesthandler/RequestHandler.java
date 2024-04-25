@@ -12,6 +12,7 @@ import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
+import org.dto.ServerSession;
 import org.dto.Session;
 import org.services.redis.RedisService;
 
@@ -36,6 +37,8 @@ public class RequestHandler implements ContainerRequestFilter {
 
             if (session == null) {
                 throw new ResponseProcessingException(Response.serverError().status(404).build(), "Unauthorized");
+            } else {
+
             }
 
         }

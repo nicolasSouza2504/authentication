@@ -17,8 +17,6 @@ public class LoginService {
     @Transactional
     public void login(String jsonUser) {
 
-        //TODO SOUT MD5
-
         UserLogin user = new Gson().fromJson(jsonUser, UserLogin.class);
 
         if (user != null) {
