@@ -17,7 +17,7 @@ public class UserLogin {
     @Column(name = "password", columnDefinition = "TEXT")
     private String password;
 
-    @Column(name = "username", columnDefinition = "TEXT")
-    private String username;
+    @Column(name = "user_name", columnDefinition = "TEXT")
+    private String userName;
 
 }

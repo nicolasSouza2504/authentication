@@ -1,18 +1,29 @@
 package org.resources.login;
 
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.services.login.LoginService;
 
 @Path("/login")
 public class LoginResource {
 
+    @Inject
+    LoginService loginService;
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login() {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response login(String jsonUser) {
+
+        loginService.login(jsonUser);
+
         return Response.ok("{\"message\": \"LOGED IN \"}").build();
+
     }
 
 }

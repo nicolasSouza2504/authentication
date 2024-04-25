@@ -1,4 +1,4 @@
-package org.services.run;
+package org.runner;
 
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;

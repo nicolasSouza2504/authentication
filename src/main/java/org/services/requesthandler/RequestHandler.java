@@ -1,4 +1,4 @@
-package org.services.handler;
+package org.services.requesthandler;
 
 import com.google.gson.Gson;
 import io.vertx.core.json.JsonObject;
