@@ -38,7 +38,7 @@ public class RequestHandler implements ContainerRequestFilter {
             if (session == null) {
                 throw new ResponseProcessingException(Response.serverError().status(404).build(), "Unauthorized");
             } else {
-
+                ServerSession.setSession(session);
             }
 
         }
