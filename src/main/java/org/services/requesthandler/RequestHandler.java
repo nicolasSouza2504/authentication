@@ -74,7 +74,7 @@ public class RequestHandler implements ContainerRequestFilter {
     }
 
     public Boolean publicPath(String path) {
-        return path != null && path.equals("/login") || path.equals("/register");
+        return path != null && path.equals("/login") || path.equals("/register/user");
     }
 
 }
