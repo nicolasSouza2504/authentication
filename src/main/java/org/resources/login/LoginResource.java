@@ -1,5 +1,6 @@
 package org.resources.login;
 
+import com.google.gson.Gson;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -23,7 +24,7 @@ public class LoginResource {
 
         Session session = loginService.login(jsonUser);
 
-        return Response.ok(session).build();
+        return Response.ok(new Gson().toJson(session)).build();
 
     }
 

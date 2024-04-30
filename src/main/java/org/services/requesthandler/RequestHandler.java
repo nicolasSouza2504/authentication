@@ -12,9 +12,11 @@ import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
+import org.apache.commons.lang3.StringUtils;
 import org.dto.ServerSession;
 import org.dto.Session;
 import org.services.redis.RedisService;
+import org.utils.UtilErrorRest;
 
 import java.util.Map;
 
@@ -36,7 +38,7 @@ public class RequestHandler implements ContainerRequestFilter {
             Session session = verifySession(requestContext);
 
             if (session == null) {
-                throw new ResponseProcessingException(Response.serverError().status(404).build(), "Unauthorized");
+                UtilErrorRest.throwResponseError("Unauthorized", Response.Status.UNAUTHORIZED.getStatusCode());
             } else {
                 ServerSession.setSession(session);
             }
@@ -49,7 +51,7 @@ public class RequestHandler implements ContainerRequestFilter {
 
         String authToken = getAuthToken(requestContext);
 
-        JsonObject jsonSession = (JsonObject) redisService.get(authToken);
+        JsonObject jsonSession = StringUtils.isNoneEmpty(authToken) ? (JsonObject) redisService.get(authToken) : null;
 
         return jsonSession != null ? new Gson().fromJson(jsonSession.toString(), Session.class) : null;
 
