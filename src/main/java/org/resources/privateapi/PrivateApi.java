@@ -14,11 +14,7 @@ public class PrivateApi {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response authorized() {
-
-        System.out.println();
-
-        return Response.ok(new ResponseDto(ServerSession.getSession().getUserName() + " is authorized", false)).status(200).build()
-                ;
+        return Response.ok(new ResponseDto(ServerSession.getSession().getUserName() + " is authorized", false)).status(200).build();
     }
 
 }

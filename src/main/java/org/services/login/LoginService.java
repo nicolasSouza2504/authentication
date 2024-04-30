@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.CharSet;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dto.Session;
@@ -12,6 +13,8 @@ import org.model.UserLogin;
 import org.repositories.UserRepository;
 import org.services.redis.RedisService;
 import org.utils.UtilErrorRest;
+
+import java.util.UUID;
 
 @ApplicationScoped
 public class LoginService {
@@ -37,7 +40,7 @@ public class LoginService {
 
             if (rigthPassword) {
 
-                Session session = new Session(RandomStringUtils.random(8), userDb.getUserName());
+                Session session = new Session(UUID.randomUUID().toString(), userDb.getUserName());
 
                 redisService.set(session.getAuthToken(), new Gson().toJson(session));
 
