@@ -1,5 +1,6 @@
 package org.resources.privateapi;
 
+import com.google.gson.Gson;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -14,7 +15,7 @@ public class PrivateApi {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response authorized() {
-        return Response.ok(new ResponseDto(ServerSession.getSession().getUserName() + " is authorized", false)).status(200).build();
+        return Response.ok(new Gson().toJson(new ResponseDto(ServerSession.getSession().getUserName() + " is authorized", false))).status(200).build();
     }
 
 }
