@@ -5,8 +5,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.model.UserLogin;
 import org.repositories.UserRepository;
@@ -28,11 +28,22 @@ public class UserService {
 
         validateUser(userLogin);
 
-        //todo encrypt password and generate sault
+        setSaltAndEncryptedPassword(userLogin);
 
         entityManager.persist(userLogin);
 
         return userLogin;
+
+    }
+
+    @Transactional
+    public void setSaltAndEncryptedPassword(UserLogin userLogin) {
+
+        userLogin.setSaltPassword(RandomStringUtils.random(8));
+
+        String concatenedPassSalt = userLogin.getPassword() + userLogin.getSaltPassword();
+
+        userLogin.setPassword(DigestUtils.md5Hex(concatenedPassSalt));
 
     }
 

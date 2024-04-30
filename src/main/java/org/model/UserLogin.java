@@ -18,7 +18,7 @@ public class UserLogin {
     @Column(name = "salt_password", columnDefinition = "TEXT")
     private String saltPassword;
 
-    @Column(name = "user_name", columnDefinition = "TEXT")
+    @Column(name = "user_name", columnDefinition = "TEXT", unique = true)
     private String userName;
 
 }

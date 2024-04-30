@@ -8,6 +8,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.services.login.LoginService;
+import org.utils.ResponseDto;
 
 @Path("/login")
 public class LoginResource {
@@ -22,7 +23,7 @@ public class LoginResource {
 
         loginService.login(jsonUser);
 
-        return Response.ok("{\"message\": \"LOGED IN \"}").build();
+        return Response.ok(new ResponseDto("Loged in", false)).build();
 
     }
 
