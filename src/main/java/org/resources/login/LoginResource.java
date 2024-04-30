@@ -7,8 +7,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.dto.Session;
 import org.services.login.LoginService;
-import org.utils.ResponseDto;
 
 @Path("/login")
 public class LoginResource {
@@ -21,9 +21,9 @@ public class LoginResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(String jsonUser) {
 
-        loginService.login(jsonUser);
+        Session session = loginService.login(jsonUser);
 
-        return Response.ok(new ResponseDto("Loged in", false)).build();
+        return Response.ok(session).build();
 
     }
 

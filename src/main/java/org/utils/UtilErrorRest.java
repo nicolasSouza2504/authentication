@@ -7,6 +7,11 @@ import jakarta.ws.rs.core.Response;
 public class UtilErrorRest {
 
     public static void throwResponseError(String message) {
-        throw new WebApplicationException(Response.status(400).entity(new Gson().toJson(new ResponseDto(message, true))).build());
+        throwResponseError(message, 400);
     }
+
+    public static void throwResponseError(String message, Integer status) {
+        throw new WebApplicationException(Response.status(status).entity(new Gson().toJson(new ResponseDto(message, true))).build());
+    }
+
 }

@@ -1,6 +1,5 @@
 package org.resources.user;
 
-import com.google.gson.Gson;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;

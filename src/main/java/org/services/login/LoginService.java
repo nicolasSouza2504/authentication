@@ -4,9 +4,14 @@ import com.google.gson.Gson;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.WebApplicationException;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.dto.Session;
 import org.model.UserLogin;
 import org.repositories.UserRepository;
+import org.services.redis.RedisService;
+import org.utils.UtilErrorRest;
 
 @ApplicationScoped
 public class LoginService {
@@ -14,29 +19,68 @@ public class LoginService {
     @Inject
     UserRepository userRepository;
 
+    @Inject
+    RedisService redisService;
+
     @Transactional
-    public void login(String jsonUser) {
+    public Session login(String jsonUser) {
 
-        UserLogin user = new Gson().fromJson(jsonUser, UserLogin.class);
+        UserLogin userLogin = new Gson().fromJson(jsonUser, UserLogin.class);
 
-        if (user != null) {
+        validateLogin(userLogin);
 
-            user = userRepository.findByUserName(user.getUserName());
+        UserLogin userDb = userRepository.findByUserName(userLogin.getUserName());
 
-            if (user != null) {
+        if (userDb != null) {
 
-                if (user.getPassword().equals(user.getPassword())) {
+            Boolean rigthPassword = validatePassword(userLogin, userDb);
 
-                    System.out.println("LOGED IN");
+            if (rigthPassword) {
 
-                } else {
-                    throw new WebApplicationException("WRONG PASSWORD", 500);
-                }
+                Session session = new Session(RandomStringUtils.random(8), userDb.getUserName());
+
+                redisService.set(session.getAuthToken(), new Gson().toJson(session));
+
+                return session;
 
             } else {
-                throw new WebApplicationException("USER NOT FOUND", 404);
+                UtilErrorRest.throwResponseError("Wrong password");
             }
 
+        } else {
+            UtilErrorRest.throwResponseError("User Not Found", 404);
+        }
+
+        return null;
+
+    }
+
+    private Boolean validatePassword(UserLogin userLogin, UserLogin userDb) {
+
+        String salt = userDb.getSaltPassword();
+
+        String concatenedPassSalt = userLogin.getPassword() + salt;
+
+        String hashedPasswordLogin = DigestUtils.md5Hex(concatenedPassSalt);
+
+        return hashedPasswordLogin.equalsIgnoreCase(userDb.getPassword());
+
+    }
+
+    private void validateLogin(UserLogin userLogin) {
+
+        if (userLogin != null) {
+
+            if (StringUtils.isEmpty(userLogin.getPassword())) {
+                UtilErrorRest.throwResponseError("Password is required");
+            }
+
+            if (StringUtils.isEmpty(userLogin.getUserName())) {
+                UtilErrorRest.throwResponseError("User name is required");
+            }
+
+        } else {
+            UtilErrorRest.throwResponseError("Password and name are required");
         }
 
     }
