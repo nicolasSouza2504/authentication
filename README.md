@@ -1,4 +1,3 @@
 # Authentication
 
-In this project, i will train my skills in Quarkus focusing in rest authentication and rest security.;
-
+In this project, i will made the common cicle of rest authentication api's, with encrypted md5 salt keys, and Session validation. 
