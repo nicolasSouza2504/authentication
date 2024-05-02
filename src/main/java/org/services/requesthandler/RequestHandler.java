@@ -51,7 +51,7 @@ public class RequestHandler implements ContainerRequestFilter {
 
         String authToken = getAuthToken(requestContext);
 
-        JsonObject jsonSession = StringUtils.isNoneEmpty(authToken) ? (JsonObject) redisService.get(authToken) : null;
+        JsonObject jsonSession = StringUtils.isNotEmpty(authToken) ? (JsonObject) redisService.get(authToken) : null;
 
         return jsonSession != null ? new Gson().fromJson(jsonSession.toString(), Session.class) : null;
 
